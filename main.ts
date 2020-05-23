@@ -53,7 +53,7 @@ tiles.setTileAt(tiles.getTileLocation(x * 2 + 1, y * 2 + 1), sprites.castle.tile
     if (x != 0 || y != 0) {
         tiles.setTileAt(tiles.getTileLocation((x * 2 + lastX * 2) / 2 + 1, (y * 2 + lastY * 2) / 2 + 1), sprites.castle.tilePath5)
     }
-    pause(50)
+    pause(1)
     let directions = NSEW.sort((a, b) => { return Math.pickRandom([-1, 1]) })
 for (let dir of directions) {
         nextX = x
@@ -116,20 +116,40 @@ function GenerateCells () {
         }
     }
 }
+function CreateEnemy (x: number, y: number) {
+    mySprite2 = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . f f f f f f f . . . . . 
+. . . f 7 7 7 7 7 7 7 f . . . . 
+. . f 7 7 7 7 7 7 7 7 7 f . . . 
+. f 7 7 f 7 7 7 7 f 7 7 7 f . . 
+. f 7 7 7 f 7 7 f 7 7 7 7 f . . 
+. f 7 7 7 7 7 7 7 7 7 7 7 f . . 
+. f 7 7 7 7 7 7 7 7 7 7 7 f . . 
+. f 7 7 7 7 7 7 7 7 7 7 7 f . . 
+. f 7 7 7 7 f f f 7 7 7 7 f . . 
+. f 7 7 7 f 7 7 7 f 7 7 7 f . . 
+. . f 7 7 7 7 7 7 7 7 7 f . . . 
+. . . f 7 7 7 7 7 7 7 f . . . . 
+. . . . f f f f f f f . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, SpriteKind.Player)
+    mySprite.setPosition(2 * x, x)
+}
+let mySprite2: Sprite = null
 let mySprite: Sprite = null
-let nextY = 0
-let nextX = 0
 let CellsY = 0
 let CellsX = 0
 let Cells: Cell[][] = []
+let nextX = 0
+let nextY = 0
 console.log("start")
 let NSEW = ["N", "S", "E", "W"]
 let TilesX = 16
 let TilesY = 16
 CellsX = TilesX / 2 - 1
 CellsY = TilesY / 2 - 1
-TilesX = 16
-TilesY = 16
 tiles.setTilemap(tiles.createTilemap(
             hex`1000100005050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505`,
             img`
