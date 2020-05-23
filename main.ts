@@ -1,23 +1,42 @@
 namespace myTiles {
     //% blockIdentity=images._tile
     export const tile0 = img`
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-    `
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`
+    //% blockIdentity=images._tile
+    export const tile1 = img`
+e e e e e e e e e e e e e e e e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e f f f f f f f f f f f f f f e 
+e e e e e e e e e e e e e e e e 
+`
 }
 function VisitCell (x: number, y: number, lastX: number, lastY: number) {
     if (x < 0 || x >= CellsX) {
@@ -30,15 +49,15 @@ function VisitCell (x: number, y: number, lastX: number, lastY: number) {
         return
     }
     Cells[x][y].Visited = true
-    tiles.setTileAt(tiles.getTileLocation(x * 2 + 1, y * 2 + 1), sprites.castle.tilePath5)
+tiles.setTileAt(tiles.getTileLocation(x * 2 + 1, y * 2 + 1), sprites.castle.tilePath5)
     if (x != 0 || y != 0) {
         tiles.setTileAt(tiles.getTileLocation((x * 2 + lastX * 2) / 2 + 1, (y * 2 + lastY * 2) / 2 + 1), sprites.castle.tilePath5)
     }
     pause(50)
     let directions = NSEW.sort((a, b) => { return Math.pickRandom([-1, 1]) })
-    for(let dir of directions) {
-        let nextX: number = x;
-        let nextY: number = y;
+for (let dir of directions) {
+        nextX = x
+        nextY = y
         switch(dir) {
             case "N":
                 nextY--;
@@ -53,13 +72,39 @@ function VisitCell (x: number, y: number, lastX: number, lastY: number) {
                 nextX--;
                 break;
         }
-        VisitCell(nextX, nextY, x, y)
+VisitCell(nextX, nextY, x, y)
     }
 }
 function GenerateMap () {
     console.log("Generate Map")
     GenerateCells()
     VisitCell(0, 0, 0, 0)
+    for (let value of tiles.getTilesByType(myTiles.tile1)) {
+        tiles.setWallAt(value, true)
+    }
+}
+function CreatePlayer () {
+    mySprite = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . 4 4 4 4 4 4 4 . . . . . 
+. . . 4 5 5 5 5 5 5 5 4 . . . . 
+. . 4 5 5 5 5 5 5 5 5 5 4 . . . 
+. 4 5 5 5 5 5 5 5 5 5 5 5 4 . . 
+. 4 5 5 5 f 5 5 5 f 5 5 5 4 . . 
+. 4 5 5 5 5 5 5 5 5 5 5 5 4 . . 
+. 4 5 5 5 5 5 5 5 5 5 5 5 4 . . 
+. 4 5 5 5 5 5 5 5 5 5 5 5 4 . . 
+. 4 5 5 5 f 5 5 5 f 5 5 5 4 . . 
+. 4 5 5 5 5 f f f 5 5 5 5 4 . . 
+. . 4 5 5 5 5 5 5 5 5 5 4 . . . 
+. . . 4 5 5 5 5 5 5 5 4 . . . . 
+. . . . 4 4 4 4 4 4 4 . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, SpriteKind.Player)
+    mySprite.setPosition(24, 24)
+    controller.moveSprite(mySprite)
+    scene.cameraFollowSprite(mySprite)
 }
 function GenerateCells () {
     console.log("Generate Cells")
@@ -71,41 +116,45 @@ function GenerateCells () {
         }
     }
 }
+let mySprite: Sprite = null
+let nextY = 0
+let nextX = 0
+let CellsY = 0
+let CellsX = 0
+let Cells: Cell[][] = []
 console.log("start")
-let NSEW: string[] = ["N", "S", "E", "W"]
+let NSEW = ["N", "S", "E", "W"]
 let TilesX = 16
 let TilesY = 16
-let CellsX = 0
-let CellsY = 0
-let Cells: Cell[][] = []
 CellsX = TilesX / 2 - 1
 CellsY = TilesY / 2 - 1
 TilesX = 16
 TilesY = 16
 tiles.setTilemap(tiles.createTilemap(
-            hex`1000100004040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404`,
+            hex`1000100005050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505050505`,
             img`
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-                . . . . . . . . . . . . . . . .
-            `,
-            [myTiles.tile0,sprites.castle.tileGrass2,sprites.castle.tilePath5,sprites.builtin.forestTiles0,sprites.castle.tileDarkGrass1],
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`,
+            [myTiles.tile0,sprites.castle.tileGrass2,sprites.castle.tilePath5,sprites.builtin.forestTiles0,sprites.castle.tileDarkGrass1,myTiles.tile1],
             TileScale.Sixteen
         ))
 class Cell {
     Visited: boolean
 }
 GenerateMap()
+CreatePlayer()
