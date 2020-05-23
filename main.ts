@@ -135,15 +135,15 @@ function CreateEnemy (x: number, y: number) {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
-    mySprite.setPosition(2 * x, x)
+    mySprite2.setPosition(16 * x + 24, 16 * y + 24)
 }
 let mySprite2: Sprite = null
 let mySprite: Sprite = null
 let CellsY = 0
 let CellsX = 0
-let Cells: Cell[][] = []
-let nextX = 0
 let nextY = 0
+let nextX = 0
+let Cells: Cell[][] = []
 console.log("start")
 let NSEW = ["N", "S", "E", "W"]
 let TilesX = 16
@@ -178,3 +178,4 @@ class Cell {
 }
 GenerateMap()
 CreatePlayer()
+CreateEnemy(4, 4)
