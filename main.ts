@@ -117,7 +117,7 @@ function GenerateCells () {
     }
 }
 function CreateEnemy (x: number, y: number) {
-    mySprite2 = sprites.create(img`
+    enemySprite = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . f f f f f f f . . . . . 
 . . . f 7 7 7 7 7 7 7 f . . . . 
@@ -134,16 +134,41 @@ function CreateEnemy (x: number, y: number) {
 . . . . f f f f f f f . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-`, SpriteKind.Player)
-    mySprite2.setPosition(16 * x + 24, 16 * y + 24)
+`, SpriteKind.Enemy)
+    enemySprite.setPosition(16 * x + 24, 16 * y + 24)
+    enemySprite.vx = 20
 }
-let mySprite2: Sprite = null
+scene.onHitWall(SpriteKind.Enemy, function (sprite) {
+    do {
+    let direction = Math.pickRandom(NSEW)
+    switch(direction) {
+        case "N":
+        newVy = -enemySpeed;
+        break;
+        case "S":
+        newVy = enemySpeed;
+        break;
+        case "E":
+        newVx = enemySpeed;
+        break;
+        case "W":
+        newVx = -enemySpeed;
+        break;
+    }
+    } while(newVx == sprite.vx && newVy == sprite.vy)
+sprite.vx = newVx
+    sprite.vy = newVy
+})
+let enemySprite: Sprite = null
 let mySprite: Sprite = null
 let CellsY = 0
 let CellsX = 0
-let nextY = 0
-let nextX = 0
 let Cells: Cell[][] = []
+let nextX = 0
+let nextY = 0
+let newVy = 0
+let newVx = 0
+let enemySpeed = 100
 console.log("start")
 let NSEW = ["N", "S", "E", "W"]
 let TilesX = 16
@@ -179,3 +204,4 @@ class Cell {
 GenerateMap()
 CreatePlayer()
 CreateEnemy(4, 4)
+CreateEnemy(6, 4)
